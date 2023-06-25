@@ -1,0 +1,49 @@
+version: '3'
+services:
+  mariadb-svc:
+    image: mariadb:latest
+    volumes:
+      - ~/haitun_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: haitun_cmdb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+  redis-svc:
+    image: redis:latest
+    # volumes:
+    #   - ~/haitun_data:/var/lib/mysql
+    restart: always
+    ports:
+      - "6379:6379"
+  haitun_cmdb-svc:
+    depends_on:
+      - mariadb-svc
+      - redis-svc
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      haitun_cmdb_dbhost: db
+      haitun_cmdb_user: root
+      haitun_cmdb_password: root
+      haitun_cmdb_port: 3306
+      haitun_cmdb_database: haitun_cmdb
+  jenkins-svc:
+    image: jenkins/jenkins:lts
+    container_name: my-jenkins
+    volumes:
+      - ~/jenkins_data:/var/jenkins_home
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+
+
+
+
+
+
