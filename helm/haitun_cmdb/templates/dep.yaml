@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cmdb
+  namespace: {{ .Values.namespace }}
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cmdb
+  template:
+    metadata:
+      labels:
+        app:  cmdb
+    spec:
+      containers:
+        - name: cmdb
+          image:  {{ .Values.cmdb.image }} 
+          ports:
+            - containerPort: 8000
+

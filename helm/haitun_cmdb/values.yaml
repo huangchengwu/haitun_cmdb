@@ -1,0 +1,9 @@
+storageClassName: csi-cephrdb-sc1
+namespace: haitun-cmdb
+cmdb:
+  image:  huangchengwu6904/hi-app:haitun_cmdb-v1
+redis:
+  image: redis:alpine
+  environment:
+    TZ: "Asia/Shanghai"
+  storage: 5Gi
